@@ -33,7 +33,7 @@ class data_field_files extends data_field_base {
     public function define_default_field() {
         global $OUTPUT;
         if (empty($this->data->id)) {
-            echo $OUTPUT->notification(get_string('missingdata','data'));
+            echo $OUTPUT->notification(get_string('missingdata', 'data'));
         }
         $this->field = new stdClass();
         $this->field->id = 0;
