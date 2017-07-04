@@ -112,7 +112,7 @@ class data_field_files extends data_field_base {
         $link = new moodle_url('/mod/data/field.php', $params);
         $str  = html_writer::start_tag('a', array('href'=>$link->out()));
         $str .= html_writer::empty_tag('img', array(
-                  'src' => $OUTPUT->pix_url('field/file', 'data'),
+                  'src' => $OUTPUT->image_url('field/file', 'data'),
                   'height' => $this->iconheight,
                   'width' => $this->iconwidth,
                   'alt' => $this->type,
