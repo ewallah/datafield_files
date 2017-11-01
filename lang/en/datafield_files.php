@@ -24,3 +24,4 @@
  */
 
 $string['pluginname'] = 'Files';
+$string['fieldtypelabel'] = 'Files';

@@ -13,9 +13,9 @@
             <?php echo get_string('maximumupload'); ?></label></td>
         <td class="c1">
             <?php
-                $course = $DB->get_record('course', array('id'=>$this->data->course));
+                $course = $DB->get_record('course', ['id' => $this->data->course]);
                 $choices = get_max_upload_sizes($CFG->maxbytes, $course->maxbytes, 0, $this->field->param3);
-                echo html_writer::select($choices, 'param3', $this->field->param3, false, array('id' => 'param3'));
+                echo html_writer::select($choices, 'param3', $this->field->param3, false, ['id' => 'param3']);
             ?>
         </td>
     </tr>
@@ -24,10 +24,9 @@
             <?php echo get_string('maxentries', 'data'); ?></label></td>
         <td class="c1">
             <?php
-                $choices = array(
-                        -1 => get_string('unlimited'),
-                        1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 20=>20, 50=>50); 
-                echo html_writer::select($choices, 'param4', $this->field->param4, false, array('id' => 'param4'));
+                $choices = [-1 => get_string('unlimited'),
+                           1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 20 => 20, 50 => 50]; 
+                echo html_writer::select($choices, 'param4', $this->field->param4, false, ['id' => 'param4']);
             ?>
         </td>
     </tr>

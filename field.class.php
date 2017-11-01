@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class data_field_files extends data_field_base {
 
     public $type = 'files';
@@ -56,37 +58,33 @@ class data_field_files extends data_field_base {
      * @param int $recordid
      * @return string
      */
-    public function display_add_field($recordid = 0) {
-        global $DB, $OUTPUT, $PAGE, $USER;
-
-        $file        = false;
-        $content     = false;
-        $fs = get_file_storage();
+    public function display_add_field($recordid = 0, $formdata = null) {
+        global $DB, $PAGE;
         $context = $PAGE->context;
         $itemid = null;
 
-        if ( $recordid > 0) {
+        if ($recordid > 0) {
             // Editing an existing database entry.
-            if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
-                file_prepare_draft_area($itemid, $this->context->id, 'mod_data', 'content', $content->id);
+            if ($content = $DB->get_record('data_content', ['fieldid' => $this->field->id, 'recordid' => $recordid])) {
+                file_prepare_draft_area($itemid, $context->id, 'mod_data', 'content', $content->id);
             }
         } else {
             $itemid = file_get_unused_draft_itemid();
         }
 
-        $html  = html_writer::start_tag('div', array('title'=>s($this->field->description)));
+        $html  = html_writer::start_tag('div', ['title' => s($this->field->description)]);
         $html .= html_writer::start_tag('fieldset');
         $html .= html_writer::start_tag('legend');
-        $html .= html_writer::tag('span', $this->field->name, array('class'=>'accesshide'));
+        $html .= html_writer::tag('span', $this->field->name, ['class' => 'accesshide']);
         $html .= html_writer::end_tag('legend');
 
         $options = new stdClass();
         $options->maxbytes = $this->field->param3;
-        if ($this->field->param4  == 0) {
+        if ($this->field->param4 == 0) {
             $this->field->param4 = -1;
         }
-        $options->maxfiles  = $this->field->param4;
-        $options->itemid    = $itemid;
+        $options->maxfiles = $this->field->param4;
+        $options->itemid = $itemid;
         $options->accepted_types = '*';
         $options->return_types = FILE_INTERNAL;
         $options->context = $PAGE->context;
@@ -94,8 +92,8 @@ class data_field_files extends data_field_base {
         $fm = new form_filemanager($options);
         $output = $PAGE->get_renderer('core', 'files');
         $html .= $output->render($fm);
-        $html .= html_writer::empty_tag('input',
-                                        array('type'=>'hidden', 'name'=>'field_'.$this->field->id.'_files', 'value'=>$itemid));
+        $html .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'field_' . $this->field->id . '_files',
+            'value' => $itemid]);
         $html .= html_writer::end_tag('fieldset');
         $html .= html_writer::end_tag('div');
 
@@ -108,15 +106,15 @@ class data_field_files extends data_field_base {
      */
     public function image() {
         global $OUTPUT;
-        $params = array('d'=>$this->data->id, 'fid'=>$this->field->id, 'mode'=>'display', 'sesskey'=>sesskey());
+        $params = ['d' => $this->data->id, 'fid' => $this->field->id, 'mode' => 'display', 'sesskey' => sesskey()];
         $link = new moodle_url('/mod/data/field.php', $params);
-        $str  = html_writer::start_tag('a', array('href'=>$link->out()));
-        $str .= html_writer::empty_tag('img', array(
+        $str  = html_writer::start_tag('a', ['href' => $link->out()]);
+        $str .= html_writer::empty_tag('img', [
                   'src' => $OUTPUT->image_url('field/file', 'data'),
                   'height' => $this->iconheight,
                   'width' => $this->iconwidth,
                   'alt' => $this->type,
-                  'title' => $this->type));
+                  'title' => $this->type]);
         $str .= html_writer::end_tag('a');
         return $str;
     }
@@ -124,21 +122,21 @@ class data_field_files extends data_field_base {
     public function display_search_field($value = '') {
         $html  = html_writer::tag('label',
                                   $this->field->name,
-                                  array('class'=>'accesshide', 'for'=>'fs_' . $this->field->id));
+                                  ['class' => 'accesshide', 'for' => 'fs_' . $this->field->id]);
         $html .= html_writer::empty_tag('input',
-                                  array('type'=>'text', 'size'=>16, 'id'=>'fs_'.$this->field->id,
-                                        'name'=>'f_'.$this->field->id, 'value'=>$value));
+                                  ['type' => 'text', 'size' => 16, 'id' => 'fs_'.$this->field->id,
+                                        'name' => 'f_'.$this->field->id, 'value' => $value]);
         return $html;
     }
 
     public function generate_sql($tablealias, $value) {
         global $DB;
-        static $i=0;
+        static $i = 0;
         $i++;
         $name = "df_files_$i";
-        return array(" ({$tablealias}.fieldid = {$this->field->id} AND ".
+        return [" ({$tablealias}.fieldid = {$this->field->id} AND ".
                        $DB->sql_like("{$tablealias}.content", ":$name", false).") ",
-                       array($name=>"%$value%"));
+                       [$name => "%$value%"]];
     }
 
     public function parse_search_field() {
@@ -154,7 +152,7 @@ class data_field_files extends data_field_base {
     public function display_browse_field($recordid, $template) {
         global  $DB, $OUTPUT;
 
-        if (!$content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+        if (!$content = $DB->get_record('data_content', ['fieldid' => $this->field->id, 'recordid' => $recordid])) {
             return '';
         }
         if (empty($content->content)) {
@@ -168,17 +166,16 @@ class data_field_files extends data_field_base {
                     continue;
                 }
                 $filename = $file->get_filename();
+                $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
+                        $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $filename, false);
                 if (file_extension_in_typegroup($filename, 'web_image')) {
-                     $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
-                         $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $filename, false);
-                     $image = html_writer::empty_tag('img',
-                         array('src' => $url->out(false, array('preview' => 'thumb', 'oid' => $file->get_timemodified())),
-                             'alt' => $filename,
-                             'title' => $filename));
+                    $image = html_writer::empty_tag('img',
+                        ['src' => $url->out(false, ['preview' => 'thumb', 'oid' => $file->get_timemodified()]),
+                              'alt' => $filename, 'title' => $filename]);
                 } else {
                      $image = $OUTPUT->pix_icon(file_file_icon($file, 80), $filename, 'moodle');
                 }
-                $result .= html_writer::tag('a', $image, array('href'=>$url, 'style'=>'margin-right:7px;'));
+                $result .= html_writer::tag('a', $image, ['href' => $url, 'style' => 'margin-right:7px;']);
             }
             return $result;
         }
@@ -196,14 +193,14 @@ class data_field_files extends data_field_base {
         global $DB, $USER;
         $fs = get_file_storage();
 
-        if (!$content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+        if (!$content = $DB->get_record('data_content', ['fieldid' => $this->field->id, 'recordid' => $recordid])) {
 
             // Quickly make one now!
             $content = new stdClass();
             $content->fieldid  = $this->field->id;
             $content->recordid = $recordid;
             $id = $DB->insert_record('data_content', $content);
-            $content = $DB->get_record('data_content', array('id'=>$id));
+            $content = $DB->get_record('data_content', ['id' => $id]);
         }
 
         // Delete existing files.
@@ -214,20 +211,20 @@ class data_field_files extends data_field_base {
 
         if (count($files) > 1 ) {
             $content->content = '';
-            $vals = array();
+            $vals = [];
             foreach ($files as $draftfile) {
                 if (!$draftfile->is_directory()) {
-                    $file_record = array(
+                    $filerecord = [
                         'contextid' => $this->context->id,
                         'component' => 'mod_data',
                         'filearea' => 'content',
                         'itemid' => $content->id,
                         'filepath' => '/',
                         'filename' => $draftfile->get_filename(),
-                    );
+                    ];
 
-                    $vals[] = $file_record['filename'];
-                    $fs->create_file_from_storedfile($file_record, $draftfile);
+                    $vals[] = $filerecord['filename'];
+                    $fs->create_file_from_storedfile($filerecord, $draftfile);
 
                 }
             }
