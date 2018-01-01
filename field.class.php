@@ -250,7 +250,7 @@ class data_field_files extends data_field_base {
      * @param string $relativepath
      * @return bool true
      */
-    public function file_ok($path) {
+    public function file_ok($relativepath) {
         return true;
     }
 }
