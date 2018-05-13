@@ -53,11 +53,12 @@ class provider implements \core_privacy\local\metadata\null_provider, datafield_
      * @param \stdClass $defaultvalue pre-populated default value that most of plugins will use
      */
     public static function export_data_content($context, $recordobj, $fieldobj, $contentobj, $defaultvalue) {
+        // TODO: implement multiple files.
         if ($fieldobj->param3) {
             $defaultvalue->field['maxbytes'] = $fieldobj->param3;
         }
         // Change file name to file path.
-        $ arr = [$recordobj->id, $contentobj->id];
+        $arr = [$recordobj->id, $contentobj->id];
         $defaultvalue->file = writer::with_context($context)->rewrite_pluginfile_urls($arr, 'mod_data', 'content', $contentobj->id,
                 '@@PLUGINFILE@@/' . $defaultvalue->content);
         unset($defaultvalue->content);
