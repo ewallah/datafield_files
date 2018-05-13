@@ -23,5 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Files';
 $string['fieldtypelabel'] = 'Files';
+$string['pluginname'] = 'Files';
+$string['privacy:metadata'] = 'The Files field component does not store any personal data, it uses tables defined in mod_data.';
