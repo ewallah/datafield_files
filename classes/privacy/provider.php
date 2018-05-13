@@ -57,11 +57,11 @@ class provider implements \core_privacy\local\metadata\null_provider, datafield_
             $defaultvalue->field['maxbytes'] = $fieldobj->param3;
         }
         // Change file name to file path.
-        $defaultvalue->file = writer::with_context($context)
-            ->rewrite_pluginfile_urls([$recordobj->id, $contentobj->id], 'mod_data', 'content', $contentobj->id,
+        $ arr = [$recordobj->id, $contentobj->id];
+        $defaultvalue->file = writer::with_context($context)->rewrite_pluginfile_urls($arr, 'mod_data', 'content', $contentobj->id,
                 '@@PLUGINFILE@@/' . $defaultvalue->content);
         unset($defaultvalue->content);
-        writer::with_context($context)->export_data([$recordobj->id, $contentobj->id], $defaultvalue);
+        writer::with_context($context)->export_data($arr, $defaultvalue);
     }
 
     /**
