@@ -16,7 +16,7 @@
 /**
  * Privacy Subsystem implementation for datafield_files.
  *
- * @package    datafield_file
+ * @package    datafield_files
  * @copyright  2018 Renaat Debleu (www.eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

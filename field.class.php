@@ -15,14 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    datafield
- * @subpackage files
+ * Datafield files
+ * @package    datafield_files
  * @copyright  2013 Renaat Debleu (www.eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Datafield files
+ * @package    datafield_files
+ * @copyright  2013 Renaat Debleu (www.eWallah.net)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class data_field_files extends data_field_base {
 
     /** @var string type */
@@ -138,6 +144,8 @@ class data_field_files extends data_field_base {
 
     /**
      * Generate sql string
+     * @param string $tablealias
+     * @param string $value
      * @return string
      */
     public function generate_sql($tablealias, $value) {
@@ -269,12 +277,12 @@ class data_field_files extends data_field_base {
     public function file_ok($relativepath) {
         return true;
     }
-    
+
     /**
      * Supports export of text
      * @return bool false
      */
-    function text_export_supported() {
+    public function text_export_supported() {
         return false;
     }
 }

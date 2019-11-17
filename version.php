@@ -15,8 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Datafield files
  * @package    datafield_files
- * @copyright  2013 Renaat Debleu (www.eWallah.net)
+ * @copyright  2017 iplusacademy (www.iplusacademy.org)
+ * @author     Renaat Debleu {info@eWallah.net}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -25,3 +27,5 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2013050100;
 $plugin->requires  = 2013050100;
 $plugin->component = 'datafield_files';
+$plugin->maturity  = MATURITY_STABLE;
+$plugin->release   = '3.4+';
