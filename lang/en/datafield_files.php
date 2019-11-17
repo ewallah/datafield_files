@@ -17,8 +17,7 @@
 /**
  * Strings for component 'datafield_files', language 'en', branch 'master'
  *
- * @package    datafield
- * @subpackage files
+ * @package    datafield_files
  * @copyright  2013 Renaat Debleu (www.eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

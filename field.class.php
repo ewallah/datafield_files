@@ -25,6 +25,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class data_field_files extends data_field_base {
 
+    /** @var string type */
     public $type = 'files';
 
     /**
@@ -56,6 +57,7 @@ class data_field_files extends data_field_base {
      * Print the relevant form element in the ADD template for this field
      *
      * @param int $recordid
+     * @param class $formdata
      * @return string
      */
     public function display_add_field($recordid = 0, $formdata = null) {
@@ -119,6 +121,11 @@ class data_field_files extends data_field_base {
         return $str;
     }
 
+    /**
+     * Display search field
+     * @param string $value
+     * @return string
+     */
     public function display_search_field($value = '') {
         $html  = html_writer::tag('label',
                                   $this->field->name,
@@ -129,6 +136,10 @@ class data_field_files extends data_field_base {
         return $html;
     }
 
+    /**
+     * Generate sql string
+     * @return string
+     */
     public function generate_sql($tablealias, $value) {
         global $DB;
         static $i = 0;
@@ -139,6 +150,10 @@ class data_field_files extends data_field_base {
                        [$name => "%$value%"]];
     }
 
+    /**
+     * Parse search field
+     * @return string
+     */
     public function parse_search_field() {
         return optional_param('f_'.$this->field->id, '', PARAM_NOTAGS);
     }
@@ -247,10 +262,19 @@ class data_field_files extends data_field_base {
     }
 
     /**
+     * Relative path support
      * @param string $relativepath
      * @return bool true
      */
     public function file_ok($relativepath) {
         return true;
+    }
+    
+    /**
+     * Supports export of text
+     * @return bool false
+     */
+    function text_export_supported() {
+        return false;
     }
 }
