@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Privacy Subsystem implementation for datafield_files.
  *
@@ -24,22 +25,20 @@ namespace datafield_files\privacy;
 use mod_data\privacy\datafield_provider;
 use core_privacy\local\request\writer;
 
-defined('MOODLE_INTERNAL') || die();
 /**
  * Privacy Subsystem for datafield_files implementing null_provider.
  *
  * @copyright  2018 Renaat Debleu (www.eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements \core_privacy\local\metadata\null_provider, datafield_provider {
-
+class provider implements datafield_provider, \core_privacy\local\metadata\null_provider {
     /**
      * Get the language string identifier with the component's language
      * file to explain why this plugin stores no data.
      *
      * @return  string
      */
-    public static function get_reason() : string {
+    public static function get_reason(): string {
         return 'privacy:metadata';
     }
 
@@ -59,8 +58,13 @@ class provider implements \core_privacy\local\metadata\null_provider, datafield_
         }
         // Change file name to file path.
         $arr = [$recordobj->id, $contentobj->id];
-        $defaultvalue->file = writer::with_context($context)->rewrite_pluginfile_urls($arr, 'mod_data', 'content', $contentobj->id,
-                '@@PLUGINFILE@@/' . $defaultvalue->content);
+        $defaultvalue->file = writer::with_context($context)->rewrite_pluginfile_urls(
+            $arr,
+            'mod_data',
+            'content',
+            $contentobj->id,
+            '@@PLUGINFILE@@/' . $defaultvalue->content
+        );
         unset($defaultvalue->content);
         writer::with_context($context)->export_data($arr, $defaultvalue);
     }
@@ -74,6 +78,5 @@ class provider implements \core_privacy\local\metadata\null_provider, datafield_
      * @param \stdClass $contentobj record from DB table {data_content}
      */
     public static function delete_data_content($context, $recordobj, $fieldobj, $contentobj) {
-
     }
 }

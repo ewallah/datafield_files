@@ -21,8 +21,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Datafield files
  * @package    datafield_files
@@ -30,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class data_field_files extends data_field_base {
-
     /** @var string type */
     public $type = 'files';
 
@@ -133,12 +130,17 @@ class data_field_files extends data_field_base {
      * @return string
      */
     public function display_search_field($value = '') {
-        $html  = html_writer::tag('label',
-                                  $this->field->name,
-                                  ['class' => 'accesshide', 'for' => 'fs_' . $this->field->id]);
-        $html .= html_writer::empty_tag('input',
-                                  ['type' => 'text', 'size' => 16, 'id' => 'fs_'.$this->field->id,
-                                        'name' => 'f_'.$this->field->id, 'value' => $value]);
+        $html  = html_writer::tag(
+            'label',
+            $this->field->name,
+            ['class' => 'accesshide', 'for' => 'fs_' . $this->field->id]
+        );
+        $html .= html_writer::empty_tag(
+            'input',
+            ['type' => 'text', 'size' => 16, 'id' => 'fs_' . $this->field->id,
+            'name' => 'f_' . $this->field->id,
+            'value' => $value]
+        );
         return $html;
     }
 
@@ -153,8 +155,8 @@ class data_field_files extends data_field_base {
         static $i = 0;
         $i++;
         $name = "df_files_$i";
-        return [" ({$tablealias}.fieldid = {$this->field->id} AND ".
-                       $DB->sql_like("{$tablealias}.content", ":$name", false).") ",
+        return [" ({$tablealias}.fieldid = {$this->field->id} AND " .
+                       $DB->sql_like("{$tablealias}.content", ":$name", false) . ") ",
                        [$name => "%$value%"]];
     }
 
@@ -163,7 +165,7 @@ class data_field_files extends data_field_base {
      * @return string
      */
     public function parse_search_field() {
-        return optional_param('f_'.$this->field->id, '', PARAM_NOTAGS);
+        return optional_param('f_' . $this->field->id, '', PARAM_NOTAGS);
     }
 
     /**
@@ -189,12 +191,22 @@ class data_field_files extends data_field_base {
                     continue;
                 }
                 $filename = $file->get_filename();
-                $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
-                        $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $filename, false);
+                $url = moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    $file->get_itemid(),
+                    $file->get_filepath(),
+                    $filename,
+                    false
+                );
                 if (file_extension_in_typegroup($filename, 'web_image')) {
-                    $image = html_writer::empty_tag('img',
+                    $image = html_writer::empty_tag(
+                        'img',
                         ['src' => $url->out(false, ['preview' => 'thumb', 'oid' => $file->get_timemodified()]),
-                              'alt' => $filename, 'title' => $filename]);
+                        'alt' => $filename,
+                        'title' => $filename]
+                    );
                 } else {
                      $image = $OUTPUT->pix_icon(file_file_icon($file, 80), $filename, 'moodle');
                 }
@@ -212,12 +224,11 @@ class data_field_files extends data_field_base {
      * @param string $name
      * @return bool
      */
-    public function update_content($recordid, $value, $name='') {
+    public function update_content($recordid, $value, $name = '') {
         global $DB, $USER;
         $fs = get_file_storage();
 
         if (!$content = $DB->get_record('data_content', ['fieldid' => $this->field->id, 'recordid' => $recordid])) {
-
             // Quickly make one now!
             $content = new stdClass();
             $content->fieldid  = $this->field->id;
@@ -232,7 +243,7 @@ class data_field_files extends data_field_base {
         $usercontext = context_user::instance($USER->id);
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $value, 'timecreated DESC');
 
-        if (count($files) > 1 ) {
+        if (count($files) > 1) {
             $content->content = '';
             $vals = [];
             foreach ($files as $draftfile) {
@@ -248,7 +259,6 @@ class data_field_files extends data_field_base {
 
                     $vals[] = $filerecord['filename'];
                     $fs->create_file_from_storedfile($filerecord, $draftfile);
-
                 }
             }
             $content->content = implode('##', $vals);

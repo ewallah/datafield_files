@@ -24,8 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013050100;
-$plugin->requires  = 2013050100;
 $plugin->component = 'datafield_files';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '3.4+';
+$plugin->release = 'v5.0.1';
+$plugin->version = 2025082500;
+$plugin->requires = 2024100700;
+$plugin->supported = [405, 500];
